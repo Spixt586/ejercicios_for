@@ -17,6 +17,9 @@ function ejecutar(numEjercicio){
             break;
         case 4:
             listaImpares();
+            break;
+        case 5:
+            seccionImpares();
             break;        
     }
 }
@@ -34,7 +37,15 @@ function listarPares(){
 }
 
 function listaImpares(){
-    for(let i = 1;i <=9;i+=2){
+    for(let i = 1;i <=7;i+=2){
         console.log(i);
+    }
+}
+
+function seccionImpares(){
+    for(let i = 0;i<=7; i++){
+        if(i%2 == 1){
+            console.log(i)
+        }
     }
 }
