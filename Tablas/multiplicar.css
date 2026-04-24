@@ -1,0 +1,560 @@
+/* ============================================
+   IMPORTS
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
+/* ============================================
+   VARIABLES & RESET
+   ============================================ */
+:root {
+  --cyan:        #00f5ff;
+  --cyan-dim:    #00c8d4;
+  --lime:        #a8ff00;
+  --magenta:     #ff00aa;
+  --magenta-dim: #c2007e;
+  --bg:          #020408;
+  --bg-panel:    #050d14;
+  --bg-row:      #07121c;
+  --border:      #0a2233;
+  --border-glow: #00f5ff33;
+  --text:        #d0faff;
+  --muted:       #3a6070;
+
+  --font-display: 'Orbitron', monospace;
+  --font-mono:    'Share Tech Mono', monospace;
+
+  --glow-cyan:    0 0 8px #00f5ff, 0 0 24px #00f5ff55;
+  --glow-magenta: 0 0 8px #ff00aa, 0 0 24px #ff00aa55;
+  --glow-lime:    0 0 8px #a8ff00, 0 0 24px #a8ff0055;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+  cursor: crosshair;
+}
+
+/* ============================================
+   BACKGROUND: GRID + SCANLINES + GLOW ORBS
+   ============================================ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0, 245, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 245, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
+  );
+  pointer-events: none;
+  animation: scanlines 8s linear infinite;
+}
+
+@keyframes scanlines {
+  from { background-position: 0 0; }
+  to   { background-position: 0 40px; }
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(0, 245, 255, 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 35% at 10% 80%, rgba(255, 0, 170, 0.06) 0%, transparent 70%);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.header {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 4rem 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  animation: headerFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes headerFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--magenta), transparent);
+  animation: lineGlow 3s ease infinite alternate;
+}
+
+@keyframes lineGlow {
+  from { opacity: 0.5; }
+  to   { opacity: 1; box-shadow: 0 0 12px var(--cyan); }
+}
+
+.header::after {
+  content: '// TABLA × 3';
+  position: absolute;
+  top: 1.5rem; right: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  animation: blink 2.5s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.15; }
+}
+
+.header__tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  border: 1px solid var(--cyan);
+  padding: 0.3rem 0.9rem;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  box-shadow: var(--glow-cyan);
+  animation: tagPulse 3s ease infinite;
+}
+
+@keyframes tagPulse {
+  0%, 100% { box-shadow: var(--glow-cyan); }
+  50%       { box-shadow: 0 0 4px var(--cyan), 0 0 10px var(--cyan); }
+}
+
+.header__title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 12vw, 6rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  animation: titleGlitch 7s ease infinite;
+}
+
+@keyframes titleGlitch {
+  0%, 88%, 100% { text-shadow: 0 0 30px rgba(0,245,255,0.2); transform: none; }
+  90%            { text-shadow: -2px 0 var(--magenta), 2px 0 var(--cyan); transform: skewX(-1deg); }
+  92%            { text-shadow: 2px 0 var(--magenta), -2px 0 var(--cyan); transform: skewX(1deg); }
+  94%            { text-shadow: 0 0 30px rgba(0,245,255,0.2); transform: none; }
+}
+
+.header__title em {
+  font-style: normal;
+  color: var(--cyan);
+  animation: numberGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes numberGlow {
+  from { text-shadow: 0 0 10px var(--cyan), 0 0 30px var(--cyan); }
+  to   { text-shadow: 0 0 20px var(--cyan), 0 0 60px var(--cyan), 0 0 80px var(--cyan-dim); }
+}
+
+/* ============================================
+   BOTÓN PROBAR
+   ============================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--bg);
+  background: var(--cyan);
+  padding: 0.85rem 2.2rem;
+  position: relative;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  box-shadow: var(--glow-cyan);
+  transition: all 0.2s ease;
+  animation: btnAppear 1s 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  margin-top: 0.5rem;
+  border: 1px solid transparent;
+}
+
+@keyframes btnAppear {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.btn::before {
+  content: '▶';
+  font-size: 0.55rem;
+  transition: transform 0.2s ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  background: transparent;
+  color: var(--cyan);
+  border-color: var(--cyan);
+  box-shadow: var(--glow-cyan), 0 0 40px rgba(0, 245, 255, 0.15);
+  outline: none;
+}
+
+.btn:hover::before { transform: translateX(4px); }
+.btn:active         { transform: scale(0.97); }
+
+/* ============================================
+   MAIN / TABLA
+   ============================================ */
+.main {
+  flex: 1;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--cyan);
+  box-shadow: var(--glow-cyan), inset 0 0 60px rgba(0, 245, 255, 0.02);
+  position: relative;
+  animation: tableReveal 0.9s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  overflow: hidden;
+}
+
+@keyframes tableReveal {
+  from { opacity: 0; transform: translateY(30px) scaleY(0.95); }
+  to   { opacity: 1; transform: translateY(0) scaleY(1); }
+}
+
+/* Esquinas decorativas tipo HUD */
+.tabla::before,
+.tabla::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.tabla::before {
+  top: -1px; left: -1px;
+  border-top: 3px solid var(--magenta);
+  border-left: 3px solid var(--magenta);
+  box-shadow: -2px -2px 8px var(--magenta);
+}
+
+.tabla::after {
+  bottom: -1px; right: -1px;
+  border-bottom: 3px solid var(--lime);
+  border-right: 3px solid var(--lime);
+  box-shadow: 2px 2px 8px var(--lime);
+}
+
+/* --- Cabecera --- */
+.tabla__titulo {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 0.85rem 1.5rem;
+  background: var(--bg-panel);
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.tabla__th {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  padding: 0.9rem 1.5rem;
+  text-align: left;
+  background: var(--bg-panel);
+  border-bottom: 2px solid var(--cyan);
+  text-shadow: var(--glow-cyan);
+  position: relative;
+}
+
+.tabla__th::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  animation: thLine 3s ease infinite alternate;
+}
+
+@keyframes thLine {
+  from { background: linear-gradient(90deg, var(--cyan), var(--magenta)); }
+  to   { background: linear-gradient(90deg, var(--magenta), var(--cyan)); }
+}
+
+/* --- Filas con entrada escalonada --- */
+.tabla__fila {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  opacity: 0;
+  animation: rowIn 0.4s ease forwards;
+}
+
+.tabla__fila:nth-child(1)  { animation-delay: 0.18s; }
+.tabla__fila:nth-child(2)  { animation-delay: 0.25s; }
+.tabla__fila:nth-child(3)  { animation-delay: 0.32s; }
+.tabla__fila:nth-child(4)  { animation-delay: 0.39s; }
+.tabla__fila:nth-child(5)  { animation-delay: 0.46s; }
+.tabla__fila:nth-child(6)  { animation-delay: 0.53s; }
+.tabla__fila:nth-child(7)  { animation-delay: 0.60s; }
+.tabla__fila:nth-child(8)  { animation-delay: 0.67s; }
+.tabla__fila:nth-child(9)  { animation-delay: 0.74s; }
+.tabla__fila:nth-child(10) { animation-delay: 0.81s; }
+
+@keyframes rowIn {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.tabla__fila:last-child { border-bottom: none; }
+
+.tabla__fila:nth-child(even) {
+  background: rgba(0, 245, 255, 0.02);
+}
+
+.tabla__fila:hover {
+  background: rgba(0, 245, 255, 0.06);
+  box-shadow: inset 3px 0 0 var(--cyan);
+}
+
+.tabla__fila--last {
+  background: rgba(168, 255, 0, 0.03) !important;
+}
+
+.tabla__fila--last:hover {
+  background: rgba(168, 255, 0, 0.07) !important;
+  box-shadow: inset 3px 0 0 var(--lime) !important;
+}
+
+/* --- Celdas --- */
+.tabla__factor,
+.tabla__op,
+.tabla__res {
+  padding: 1.05rem 1.5rem;
+  vertical-align: middle;
+}
+
+.tabla__factor {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+  width: 18%;
+}
+
+.tabla__op {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--text);
+  width: 42%;
+  letter-spacing: 0.08em;
+  transition: color 0.2s ease;
+}
+
+.tabla__fila:hover .tabla__op { color: var(--cyan); }
+
+.tabla__res {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--magenta);
+  width: 40%;
+  text-shadow: var(--glow-magenta);
+  transition: text-shadow 0.2s ease;
+}
+
+.tabla__fila:hover .tabla__res {
+  text-shadow: 0 0 14px var(--magenta), 0 0 36px var(--magenta);
+}
+
+.tabla__fila--last .tabla__res {
+  color: var(--lime);
+  text-shadow: var(--glow-lime);
+}
+
+.tabla__fila--last:hover .tabla__res {
+  text-shadow: 0 0 14px var(--lime), 0 0 36px var(--lime);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+.footer::before {
+  content: '';
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  margin: 0 auto 1rem;
+  animation: footerLine 3s ease infinite alternate;
+}
+
+@keyframes footerLine {
+  from { width: 40px; opacity: 0.4; }
+  to   { width: 120px; opacity: 1; }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 600px) {
+  .header {
+    padding: 3rem 1.25rem 2rem;
+  }
+
+  .header::after { display: none; }
+
+  .main { padding: 2rem 1.25rem; }
+
+  .tabla__titulo,
+  .tabla__th { padding: 0.7rem 1rem; }
+
+  .tabla__factor,
+  .tabla__op,
+  .tabla__res { padding: 0.85rem 1rem; }
+
+  .tabla__res { font-size: 1.1rem; }
+  .tabla__op  { font-size: 0.9rem; }
+}
+
+@media (max-width: 380px) {
+  .header__title { font-size: 2.8rem; }
+
+  .tabla__factor,
+  .tabla__op,
+  .tabla__res { padding: 0.7rem 0.75rem; }
+
+  .tabla__op  { font-size: 0.8rem; }
+  .tabla__res { font-size: 1rem; }
+
+  .btn { font-size: 0.65rem; padding: 0.75rem 1.5rem; }
+}
+
+/* ============================================
+   ACCESIBILIDAD: REDUCCIÓN DE MOVIMIENTO
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .tabla__fila { opacity: 1; }
+}
+
+/* ============================================
+   INPUT DE NÚMERO
+   ============================================ */
+.input__label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.input__texto {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--cyan);
+  background: var(--bg-panel);
+  border: 1px solid var(--cyan);
+  padding: 0.65rem 1.1rem;
+  width: 100%;
+  max-width: 280px;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  box-shadow: var(--glow-cyan);
+  outline: none;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  caret-color: var(--magenta);
+}
+
+.input__texto::placeholder {
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+.input__texto:focus {
+  border-color: var(--magenta);
+  box-shadow: var(--glow-magenta);
+  color: var(--magenta);
+}
+
+/* Quitar flechas nativas del input number */
+.input__texto::-webkit-outer-spin-button,
+.input__texto::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input__texto[type=number] {
+  -moz-appearance: textfield;
+}
