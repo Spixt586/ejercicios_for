@@ -15,18 +15,52 @@
   <div class="noise"></div>
 
   <header class="header">
-    <span class="header__tag">matemáticas / primaria</span>
-    <h1 class="header__title">Tablas de <em>Multiplicar</em></h1>
-    <label class="input__label" for="numeroTabla">Escribe un número</label>
-    <input class="input__texto" type="number" id="numeroTabla" min="1" max="100" placeholder="Ej: 3" />
-    <a href="#tabla" class="btn" onclick="generarTablas()">PROBAR</a>
+    <span class="header__tag">Generador de tablas de multiplicar</span>
+    <h1 class="header__title">Tablas de <em>multiplicar</em></h1>
+    <label class="input__label" for="numeroTabla">¿De qué número quieres ver la tabla?</label>
+    <input class="input__texto" type="number" id="numeroTabla" min="1" max="100" placeholder="Escribe un número del 1 al 100" title="Ingresa un número entre 1 y 100" />
+    <a href="#tabla" class="btn" onclick="generarTablas()" title="Haz clic para ver la tabla del número que escribiste">Ver tabla →</a>
   </header>
+
+  <section class="guia" aria-label="Instrucciones de uso">
+    <h2 class="guia__titulo">Así de fácil funciona</h2>
+    <ol class="guia__pasos">
+      <li class="guia__paso">
+        <span class="guia__num">01</span>
+        <div class="guia__info">
+          <strong class="guia__nombre">Elige tu número</strong>
+          <p class="guia__desc">Escribe cualquier número del 1 al 100 en la caja de arriba. ¡Solo números enteros!</p>
+        </div>
+      </li>
+      <li class="guia__paso">
+        <span class="guia__num">02</span>
+        <div class="guia__info">
+          <strong class="guia__nombre">Toca "Ver tabla"</strong>
+          <p class="guia__desc">Haz clic en el botón y la tabla cambiará al instante con tu número.</p>
+        </div>
+      </li>
+      <li class="guia__paso">
+        <span class="guia__num">03</span>
+        <div class="guia__info">
+          <strong class="guia__nombre">Revisa los resultados</strong>
+          <p class="guia__desc">Verás tu número multiplicado del 1 al 10, con la operación y el resultado de cada fila.</p>
+        </div>
+      </li>
+      <li class="guia__paso">
+        <span class="guia__num">04</span>
+        <div class="guia__info">
+          <strong class="guia__nombre">¡Prueba con otro!</strong>
+          <p class="guia__desc">Cambia el número y vuelve a tocar el botón. Puedes repetirlo todas las veces que quieras.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
 
   <main class="main" id="tabla">
     <table class="tabla" id="tablas">
       <thead>
         <tr>
-          <th colspan="3" class="tabla__titulo">3 × n = resultado</th>
+          <th colspan="3" class="tabla__titulo">Aquí aparecerá tu tabla de multiplicar</th>
         </tr>
         <tr>
           <th class="tabla__th">Factor</th>

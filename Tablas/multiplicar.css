@@ -558,3 +558,121 @@ body::after {
 .input__texto[type=number] {
   -moz-appearance: textfield;
 }
+
+/* ============================================
+   GUÍA DE PASOS
+   ============================================ */
+.guia {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 2rem 3rem;
+  animation: headerFadeIn 0.9s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.guia__titulo {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+
+.guia__pasos {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.guia__paso {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  padding: 1.1rem 1.2rem;
+  position: relative;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.guia__paso:hover {
+  border-color: var(--cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+/* Línea de acento izquierda */
+.guia__paso::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--cyan), var(--magenta));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.guia__paso:hover::before {
+  opacity: 1;
+}
+
+/* Número */
+.guia__num {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+  line-height: 1;
+  flex-shrink: 0;
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.guia__paso:hover .guia__num {
+  opacity: 1;
+}
+
+/* Texto */
+.guia__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.guia__nombre {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.guia__desc {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 560px) {
+  .guia {
+    padding: 0 1.25rem 2rem;
+  }
+
+  .guia__pasos {
+    grid-template-columns: 1fr;
+  }
+
+  .guia__num {
+    font-size: 1.2rem;
+  }
+}
